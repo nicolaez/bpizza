@@ -33,8 +33,6 @@ class Order extends CI_Controller{
         $top_name= "";
         for($i=0; $i<sizeof($temp); $i++){
             $t = $this->Topping_model->getToppingById($temp[$i]);
-
-           // print_r($t[0]->name);
             $top_name = $top_name.$t[0]->name. ", ";
             $top_price +=$t[0]->price;
         }
@@ -43,11 +41,6 @@ class Order extends CI_Controller{
         $pizza_price = $pizza[0]->price;
         $qty = $this->input->post('quantity');
         $total_price = ($top_price + $pizza_price)*$qty;
-
-
-        //$t = $this->Topping_model->getToppingById($temp[1]);
-//print_r($top_name);
-       // print_r($top_price);
         $data = array(
             'order_nr' => $_SESSION['my_order'],
             'user_id' => $_SESSION['logged_in']['id'],
@@ -57,7 +50,6 @@ class Order extends CI_Controller{
             'total_tops' => $top_price,
             'total' => $total_price
         );
-        //print_r($data);
         $this->Order_model->addOrder($data);
 
         redirect('http://bpizza.app/index.php/Order/myOrder');
@@ -70,7 +62,6 @@ class Order extends CI_Controller{
         }
         else
             $this->load->view('add_order');
-
     }
 
 
@@ -101,18 +92,5 @@ class Order extends CI_Controller{
         $this->session->set_userdata($ord_nr);
         $checked['ord_check'] = $this->Order_model->checkOrderStatus($_SESSION['chek_ord']);
         $this->load->view('delivered_status', $checked);
-
-       /* foreach($checked as $ch){
-            if($ch['order_nr'] == $ord_number && $_SESSION['logged_in']['id']==$ch['user_id']){
-                if($ch['status'] == 1){
-                    $st = "Your order is delivered";
-                    $this->load->view('delivered_status', $st);
-                }
-                else{
-                    $st = "Your order is in proccess";
-                    $this->load->view('delivered_status', $st);
-                }
-            }
-        }*/
     }
 }
